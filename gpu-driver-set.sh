@@ -14,16 +14,31 @@ main(){
 	while [ $finish = 0 ];
 	do
 		echo "	> Instalar repositório PPA?"
-		echo "	1 - Sim        2 - Não"
+		echo "	1 - AMD		2 - NVIDIA		3 - JÁ INSTALADO"
 		read opcao;
 		case $opcao in
 			"1") 
 				sudo apt-add-repository ppa:oibaf/graphics-drivers
 				sudo apt-get update
 				sudo apt-get dist-upgrade
-				echo "	> É necessário a reinicialização do computador!"
+				echo
+				echo "	> É necessário a reinicialização do computador para continuar!"
+				echo "	> Script finalizado!"
+				echo
+				exit 0
 			;;
 			"2")
+				sudo apt-add-repository ppa:graphics-drivers/ppa
+				sudo apt update
+				sudo ubuntu-drivers autoinstall
+				echo
+				echo "	> Driver instaldo"
+				echo "	> É necessário a reinicialização do computador!"
+				echo "	> Script finalizado!"
+				echo
+				exit 0
+			;;
+			"3")
 				echo "	> Continuando..."
 			;;
 		esac
@@ -31,11 +46,10 @@ main(){
 		echo "	> Ativar driver AMD ou INTEL?"
 		read driver1;
 		driver2=${driver1,,}
-		echo $driver2
 		grub
 	done
 echo "	> Substituindo arquivo..."
-sudo mv grub /etc/default/grub
+sudo mv grub /etc/default/grub && sudo grub2-mkconfig -o /boot/grub2/grub.cfg && sudo grub-mkconfig -o /boot/grub/grub.cfg
 echo "	> Salvando arquivo..."
 echo
 sudo update-grub
